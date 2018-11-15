@@ -20,6 +20,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -186,7 +188,11 @@ public class ModuleUtil {
 			throw new ModuleException(filename + " is already associated with a loaded module.");
 		}
 		
-		File file = new File(folder.getAbsolutePath(), filename);
+		//	normalize input filename 
+		Path normalizedPath = Paths.get(filename).normalize();
+		String normalizedFilename = normalizedPath.getFileName().toString();
+		
+		File file = new File(folder.getAbsolutePath(), normalizedFilename);
 		
 		FileOutputStream outputStream = null;
 		try {
