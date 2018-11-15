@@ -9,6 +9,7 @@
  */
 package org.openmrs.api.context;
 
+import java.text.Normalizer;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -279,7 +280,12 @@ public class Context {
 	 * @should not authenticate with null password and proper system id
 	 */
 	public static void authenticate(String username, String password) throws ContextAuthenticationException {
-		log.debug("Authenticating with username: {}", username);
+		// convert the username String to ASCII characters to avoid log forging
+		String normalizedUsername = Normalizer
+			.normalize(username, Normalizer.Form.NFD)
+			.replaceAll("[^\\p{ASCII}]", "");
+		
+		log.debug("Authenticating with username: {}", normalizedUsername);
 
 		if (Daemon.isDaemonThread()) {
 			log.error("Authentication attempted while operating on a "
