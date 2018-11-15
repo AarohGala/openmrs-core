@@ -423,7 +423,14 @@ public class ModuleClassLoader extends URLClassLoader {
 		
 		// each module gets its own folder named /moduleId/
 		if (!tmpModuleDir.exists()) {
-			tmpModuleDir.mkdir();
+			boolean folderCreated = tmpModuleDir.mkdir();
+
+			// if folder wasn't created this time, and doesn't exist
+			if (!folderCreated && !tmpModuleDir.exists()) {
+				log.error("Unable to create module directory: " + tmpModuleDir.getName());
+				throw new APIException("Module.error.foldernotcreated", (Object[]) null);
+			}
+			
 			tmpModuleDir.deleteOnExit();
 		}
 		return tmpModuleDir;
