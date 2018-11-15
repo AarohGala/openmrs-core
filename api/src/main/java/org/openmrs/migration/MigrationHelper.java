@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Arrays;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -151,19 +152,23 @@ public class MigrationHelper {
 			user.setDateChanged(parseDate(e.getAttribute("date_changed")));
 			
 			// Generate a temporary password: 8-12 random characters
-			String pass;
+			char[] password;
 			{
 				int length = rand.nextInt(4) + 8;
-				char[] password = new char[length];
+				password = new char[length];
 				for (int x = 0; x < length; x++) {
 					int randDecimalAsciiVal = rand.nextInt(93) + 33;
 					password[x] = (char) randDecimalAsciiVal;
 				}
-				pass = new String(password);
 			}
-			us.createUser(user, pass);
+			us.createUser(user, new String(password));
+			
+			// Erase password from memory
+			Arrays.fill(password, ' ');
+			
 			++ret;
 		}
+		
 		return ret;
 	}
 	
