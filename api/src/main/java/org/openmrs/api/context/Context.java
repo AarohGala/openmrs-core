@@ -280,10 +280,10 @@ public class Context {
 	 * @should not authenticate with null password and proper system id
 	 */
 	public static void authenticate(String username, String password) throws ContextAuthenticationException {
-		// convert the username String to ASCII characters to avoid log forging
+		// convert the username String to ASCII characters to avoid log forging. Also remove all white spaces
 		String normalizedUsername = Normalizer
 			.normalize(username, Normalizer.Form.NFD)
-			.replaceAll("[^\\p{ASCII}]", "");
+			.replaceAll("[^\\p{ASCII}]", "").replaceAll("\\s","");;
 		
 		log.debug("Authenticating with username: {}", normalizedUsername);
 
