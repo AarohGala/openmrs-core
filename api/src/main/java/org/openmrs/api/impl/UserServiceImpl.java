@@ -25,10 +25,7 @@ import org.openmrs.Role;
 import org.openmrs.User;
 import org.openmrs.annotation.Authorized;
 import org.openmrs.annotation.Logging;
-import org.openmrs.api.APIAuthenticationException;
-import org.openmrs.api.APIException;
-import org.openmrs.api.CannotDeleteRoleWithChildrenException;
-import org.openmrs.api.UserService;
+import org.openmrs.api.*;
 import org.openmrs.api.context.Context;
 import org.openmrs.api.db.DAOException;
 import org.openmrs.api.db.LoginCredential;
@@ -648,7 +645,7 @@ public class UserServiceImpl extends BaseOpenmrsService implements UserService {
 		// if we are able to login using both new password and old password then both are same
 		else if(dao.getLoginCredential(user).checkPassword(oldPassword) &&
 					dao.getLoginCredential(user).checkPassword(newPassword)) {
-			throw new APIException("old.password.same.as.new.password", (Object[]) null);
+			throw new PasswordException("old.password.same.as.new.password");
 		}
 	
 		updatePassword(user, newPassword);
