@@ -426,7 +426,7 @@ public class ModuleClassLoader extends URLClassLoader {
 			boolean folderCreated = tmpModuleDir.mkdir();
 
 			// if folder wasn't created this time, and doesn't exist
-			if (!folderCreated && !tmpModuleDir.exists()) {
+			if (!folderCreated) {
 				log.error("Unable to create module directory: " + tmpModuleDir.getName());
 				throw new APIException("Module.error.foldernotcreated", (Object[]) null);
 			}
